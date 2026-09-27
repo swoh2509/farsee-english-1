@@ -1,0 +1,4 @@
+gradio
+speechrecognition
+gtts
+pypdf
