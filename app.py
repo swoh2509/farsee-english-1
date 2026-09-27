@@ -203,4 +203,4 @@ import os
 if __name__ == "__main__":
     # Render가 자동으로 지정하는 포트를 읽고, 없으면 7860 사용
     port = int(os.environ.get("PORT", 7860))
-    demo.launch(server_name="0.0.0.0", server_port=port)
+    demo.launch(share=True)
