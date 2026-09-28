@@ -143,22 +143,7 @@ with tab1:
 
         st.divider()
 
-        # 2. 말하기 실습 (정답 확인보다 위에 배치)
-        st.subheader("발음 및 말하기 실습")
-        st.caption("스마트폰 마이크를 켜고 직접 영작한 문장을 소리 내어 읽어보세요.")
-        recorded_audio = st.audio_input("마이크 녹음", key=f"audio_input_{curr_idx}")
-
-        if recorded_audio is not None:
-            if st.button("내 발음 채점하기", type="primary", key=f"btn_eval_{curr_idx}"):
-                with st.spinner("발음 분석 중..."):
-                    stt_res, is_ok = evaluate_speech(recorded_audio, item["eng"])
-                    st.write(f"인식된 발음: {stt_res}")
-                    if is_ok:
-                        st.success("훌륭합니다! 정확하게 발음하셨습니다.")
-                    else:
-                        st.warning("정답 문장과 다소 차이가 있습니다. 아래 모범 정답을 확인해 보세요!")
-
-        st.divider()
+        
         with st.expander("모범 영작 정답 및 원어민 발음 확인"):
             st.markdown(f"**{item['eng']}**")
             if st.button("원어민 발음 듣기", key=f"btn_tts_{curr_idx}"):
