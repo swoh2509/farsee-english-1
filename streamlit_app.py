@@ -1,3 +1,4 @@
+
 import os
 import io
 import re
@@ -127,16 +128,8 @@ with tab1:
 
         # 2. 직접 영작 타이핑 입력창 및 채점
         st.subheader("직접 영작해보기")
-        user_typing = st.text_input(
-            "위 우리말을 보고 영어 문장을 타이핑해 보세요.",
-            key=f"text_input_{curr_idx}",
-
-            placeholder="여기에 영작한 영문장을 입력하세요"
-
-        st.subheader("발음 및 말하기 실습")
-        )        st.caption("스마트폰 마이크를 켜고 직접 영작한 문장을 소리 내어 읽어보세요.")
+        user_typing = st.text_input("위 우리말을 보고 영어 문장을 타이핑해 보세요.", key=f"text_input_{curr_idx}")
         if st.button("영작 정답 확인", key=f"btn_check_text_{curr_idx}"):
-
             if not user_typing.strip():
                 st.warning("문장을 먼저 입력해 주세요.")
             else:
@@ -145,16 +138,30 @@ with tab1:
                 if clean_u == clean_t:
                     st.success("정답입니다! 완벽하게 영작하셨습니다.")
                 else:
-                    st.error("아쉽네요. 철자나 어순을 확인해 보세요!")                        st.warning("정답 문장과 다소 차이가 있습니다. 아래 모범 정답을 확인해 보세요!")
+                    st.error("아쉽네요. 철자나 어순을 확인해 보세요!")
 
         st.divider()
 
-        # 3. 말하기 실습 (정답보다 위로 배치)
+        # 3. 말하기 실습 (모범 정답 확인보다 위에 배치)
+        st.subheader("발음 및 말하기 실습")
+        st.caption("스마트폰 마이크를 켜고 직접 영작한 문장을 소리 내어 읽어보세요.")
+        recorded_audio = st.audio_input("마이크 녹음", key=f"audio_input_{curr_idx}")
+
+        if recorded_audio is not None:
+            if st.button("내 발음 채점하기", type="primary", key=f"btn_eval_{curr_idx}"):
+                with st.spinner("발음 분석 중..."):
+                    stt_res, is_ok = evaluate_speech(recorded_audio, item["eng"])
+                    st.write(f"인식된 발음: {stt_res}")
+                    if is_ok:
+                        st.success("훌륭합니다! 정확하게 발음하셨습니다.")
+                    else:
+                        st.warning("정답 문장과 다소 차이가 있습니다. 아래 모범 정답을 확인해 보세요!")
 
         st.divider()
+
         # 4. 모범 정답 및 원어민 발음 (맨 마지막에 확인)
         with st.expander("모범 영작 정답 및 원어민 발음 확인"):
-            st.markdown(item['eng'])
+            st.markdown(item["eng"])
             if st.button("원어민 발음 듣기", key=f"btn_tts_{curr_idx}"):
                 audio_stream = generate_tts_audio(item["eng"])
                 st.audio(audio_stream, format="audio/mp3")
