@@ -144,11 +144,7 @@ with tab1:
         st.divider()
 
         
-        with st.expander("모범 영작 정답 및 원어민 발음 확인"):
-            st.markdown(f"**{item['eng']}**")
-            if st.button("원어민 발음 듣기", key=f"btn_tts_{curr_idx}"):
-                audio_stream = generate_tts_audio(item["eng"])
-                st.audio(audio_stream, format="audio/mp3")
+        
 
         st.divider()
 
@@ -167,7 +163,12 @@ with tab1:
                         st.warning("정답 문장과 다소 차이가 있습니다. 다시 시도해 보세요!")
 
         st.divider()
-
+with st.expander("모범 영작 정답 및 원어민 발음 확인"):
+            st.markdown(f"**{item['eng']}**")
+            if st.button("원어민 발음 듣기", key=f"btn_tts_{curr_idx}"):
+                audio_stream = generate_tts_audio(item["eng"])
+                st.audio(audio_stream, format="audio/mp3")
+                st.divider()
         c1, c2 = st.columns(2)
         with c1:
             if st.button("◀ 이전 문장", use_container_width=True, disabled=(curr_idx == 0)):
