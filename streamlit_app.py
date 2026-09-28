@@ -171,4 +171,3 @@ with tab2:
                 f.write(uploaded_file.getbuffer())
             st.success(f"{save_filename} 파일이 저장되었습니다.")
             st.cache_data.clear()
-
